@@ -1,4 +1,5 @@
 from PIL import Image
+import io
 
 deflist = [(250, 250, 250), (200, 200, 200), (150, 150, 150), (100, 100, 100), (50, 50, 50), (0, 0, 0)]
 outlist = []
@@ -17,10 +18,11 @@ def compare(rgb, deflist):
         if compareColor(rgb,p) < dif:
             dif = compareColor(rgb,p)
             paint = p
-    print("closest to")
+    #print("closest to")
     outlist.append(p)
-    print(paint)
+    #print(paint)
 
+#this one is for dealing with a reference to image by path
 def main(filename, numpaints, database):
 
     if numpaints >= 5 & numpaints <=35:
@@ -36,17 +38,40 @@ def main(filename, numpaints, database):
     j = 0
 
     while j < maxcolors:
+        #print(list[j][0])
+        #print(list[j][1])
+        compare(list[j][1], deflist)
+        j+= 1
+
+    hold = outlist.copy()
+    outlist.clear()
+    #print(len(hold))
+    return hold
+
+#this one is for dealing with the image itself
+def mainproper(file, numpaints, database):
+
+    if numpaints >= 5 & numpaints <=35:
+        maxcolors = numpaints
+    if database!=None:
+        deflist = database
+    if file != None:
+        im = Image.open(io.BytesIO(file))
+    else:
+        return
+    list = im.getcolors(im.size[0] * im.size[1])
+    list.sort(reverse=True)
+    j = 0
+
+    while j < maxcolors:
         print(list[j][0])
         print(list[j][1])
         compare(list[j][1], deflist)
         j+= 1
-    return outlist
-main("test.jpg",15,deflist)
-#    if len(list) > 0:
- #       while i < len(list):
-  #          if list[i][0] > maxnum:
-   #             maxnum = list[i][0]
-    #            maxpix = list[i][1]
-     #       i+= 1
 
-#print(maxpix)
+    hold = outlist.copy()
+    outlist.clear()
+    print(len(hold))
+    return hold
+
+#main("test.jpg",15,deflist)
