@@ -5,10 +5,20 @@ connection = db.connect(host='localhost',
                              password='password',
                              db='paints')
 
-query = "select * from paints.acrylic"
 
-cursor = connection.cursor()
-cursor.execute(query)
-results = cursor.fetchone()
+def rbg(self):
+  query = "select rbg from paints.acrylic"
+  cursor = connection.cursor()
+  cursor.execute(query)
+  results = cursor.fetchall()
+  return results
 
-print(results)
+def retreive_colors(self, rbg):
+  ans = []
+  for color in rbg:
+    query = "select paint_name,paint)link from paints.acrylic where rbg =" + color
+    cursor = connection.cursor()
+    cursor.execute(query)
+    ans.append(cursor.fetchone())
+  return results
+
